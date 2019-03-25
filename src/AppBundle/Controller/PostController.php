@@ -68,6 +68,7 @@ class PostController extends Controller
       $blogComment->setCreatedAt(new \DateTime());
       $blogComment->setAuthor($this->getUser());
       $blogComment->setPost($post);
+      $blogComment->setCreatedAt(new \DateTime());
       $em->persist($blogComment);
       $em->flush();
       $this->addFlash('success', 'Congratulations! Your comment is created');
@@ -99,6 +100,7 @@ class PostController extends Controller
       //create BlogPost
       $em = $this->getDoctrine()->getManager();
       $post->setAuthor($this->getUser());
+      $post->setCreatedAt(new \DateTime());
       $em->persist($post);
       $em->flush();
       $this->addFlash('success', 'Saved successfully!');

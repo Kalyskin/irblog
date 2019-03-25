@@ -76,6 +76,7 @@ class CommentApiController extends FOSRestController
     }
     $data->setContent($content);
     $data->setAuthor($author);
+    $data->setCreatedAt(new \DateTime());
     $em = $this->getDoctrine()->getManager();
     $em->persist($data);
     $em->flush();

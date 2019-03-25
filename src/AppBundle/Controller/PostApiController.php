@@ -74,6 +74,7 @@ class PostApiController extends FOSRestController
     $data->setAuthor($author);
     $data->setKeywords($keywords);
     $data->setMetaDescription($meta_description);
+    $data->setCreatedAt(new \DateTime());
     $em = $this->getDoctrine()->getManager();
     $em->persist($data);
     $em->flush();
