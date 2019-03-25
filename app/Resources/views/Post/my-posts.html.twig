@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Posts{% endblock %}
+{% block body %}
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <br>
+                    <div class="alert alert-{{ label }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            <h1 class="my-4">My posts</h1>
+
+            {% for post in posts %}
+                <!-- Blog Post -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ post.title }}</h2>
+                        <p class="card-text">{{ post.content }}</p>
+                        <a href="{{ path('view_post', {'slug': post.slug}) }}" class="btn btn-primary">Read More &rarr;</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Posted on {{ post.createdAt|date('F j, Y') }} by
+                        <a href="#">{{ post.author }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% if pagination.has_next or pagination.has_prev %}
+            <ul class="pagination justify-content-center mb-4">
+                <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+                    <a class="page-link" href="{{ path('homepage') }}?page={{ pagination.prev_page }}">← Newer</a>
+                </li>
+                <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="{{ path('homepage') }}?page={{ pagination.next_page }}">Older →</a>
+                </li>
+            </ul>
+            {% endif %}
+
+        </div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <!-- Side Widget -->
+            <div class="card my-4">
+                <div class="card-body">
+                    <a href="{{ path('new_post') }}" class="btn btn-primary btn-block">Add post</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Search Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
