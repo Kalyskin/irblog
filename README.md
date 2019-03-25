@@ -1,5 +1,6 @@
 irblog
 ======
+How to run app
 1) `unzip vendor.zip`
 2) Set mysql credentials here `app/config/parameters.yml`
 3) Create database `php bin/console doctrine:database:create`
@@ -11,8 +12,7 @@ irblog
 
  admin email: `admin@example.com`<br/>
  admin pass: `admin`
- 
-<hr>
+
 Api<br/>
 *posts*<br>
  GET `/api/posts`<br>
