@@ -104,7 +104,7 @@ class CommentApiController extends FOSRestController
     }
     /** @var User $author */
     $author = $this->getUser();
-    if ($comment->getAuthor()->getId() !== $author->getId()) {
+    if (!$author || $comment->getAuthor()->getId() !== $author->getId()) {
       return new View("Access denied", Response::HTTP_FORBIDDEN);
     }
     $comment->setContent($content);
@@ -127,7 +127,7 @@ class CommentApiController extends FOSRestController
     }
     /** @var User $author */
     $author = $this->getUser();
-    if ($comment->getAuthor()->getId() !== $author->getId()) {
+    if (!$author || $comment->getAuthor()->getId() !== $author->getId()) {
       return new View("Access denied", Response::HTTP_FORBIDDEN);
     }
     $comment->setDraft(true);

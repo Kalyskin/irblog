@@ -98,7 +98,7 @@ class PostApiController extends FOSRestController
     }
     /** @var User $author */
     $author = $this->getUser();
-    if ($post->getAuthor()->getId() !== $author->getId()) {
+    if (!$author || $post->getAuthor()->getId() !== $author->getId()) {
       return new View("Access denied", Response::HTTP_FORBIDDEN);
     }
     $title = $request->get('title', $post->getTitle());
@@ -129,7 +129,7 @@ class PostApiController extends FOSRestController
     }
     /** @var User $author */
     $author = $this->getUser();
-    if ($post->getAuthor()->getId() !== $author->getId()) {
+    if (!$author || $post->getAuthor()->getId() !== $author->getId()) {
       return new View("Access denied", Response::HTTP_FORBIDDEN);
     }
     $post->setDraft(true);
