@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\BlogComment;
 use AppBundle\Entity\BlogPost;
+use AppBundle\Entity\User;
 use AppBundle\Repository\BlogCommentRepository;
-use AppBundle\Repository\BlogPostRepository;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -29,9 +29,9 @@ class CommentApiController extends FOSRestController
       return new View("post not found", Response::HTTP_NOT_FOUND);
     }
     $page = max($request->query->getInt('page', 1), 1);
-    /** @var BlogCommentRepository $blogPostRepository */
-    $blogPostRepository = $this->getDoctrine()->getRepository(BlogComment::class);
-    $comments = $blogPostRepository->getPostComments($post, $page, 100);
+    /** @var BlogCommentRepository $blogCommentRepository */
+    $blogCommentRepository = $this->getDoctrine()->getRepository(BlogComment::class);
+    $comments = $blogCommentRepository->getPostComments($post, $page, 100);
 
     if (empty($comments)) {
       return new View("there are no comments exist", Response::HTTP_NOT_FOUND);
@@ -102,6 +102,11 @@ class CommentApiController extends FOSRestController
     if (empty($content)) {
       return new View("content is empty", Response::HTTP_NOT_FOUND);
     }
+    /** @var User $author */
+    $author = $this->getUser();
+    if ($comment->getAuthor()->getId() !== $author->getId()) {
+      return new View("Access denied", Response::HTTP_FORBIDDEN);
+    }
     $comment->setContent($content);
     $sn->flush();
     return new View("Comment Updated Successfully", Response::HTTP_OK);
@@ -119,10 +124,14 @@ class CommentApiController extends FOSRestController
     $comment = $this->getDoctrine()->getRepository(BlogComment::class)->find($id);
     if (empty($comment)) {
       return new View("comment not found", Response::HTTP_NOT_FOUND);
-    } else {
-      $comment->setDraft(true);
-      $sn->flush();
     }
+    /** @var User $author */
+    $author = $this->getUser();
+    if ($comment->getAuthor()->getId() !== $author->getId()) {
+      return new View("Access denied", Response::HTTP_FORBIDDEN);
+    }
+    $comment->setDraft(true);
+    $sn->flush();
     return new View("deleted successfully", Response::HTTP_OK);
   }
 }

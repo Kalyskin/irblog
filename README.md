@@ -7,7 +7,22 @@ irblog
 5) Create admin user and first post and comment`php bin/console doctrine:fixtures:load`
 6) Run server `php bin/console server:run`
 
-<hr>
+<hr/>
 
- admin email: `admin@example.com`<br>
+ admin email: `admin@example.com`<br/>
  admin pass: `admin`
+ 
+<hr>
+Api<br/>
+*posts*<br>
+ GET `/api/posts`<br>
+ POST `/api/post/`<br>
+ PUT `/api/post/{id}`<br>
+ DELETE `/api/post/{id}`<br>
+<br/>
+*comments*<br>
+ GET `/api/comments/{postId}`<br>
+ POST `/api/comment/`<br>
+ PUT `/api/comment/{id}`<br>
+ DELETE `/api/comment/{id}`<br>
+<br/><br/>

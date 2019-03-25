@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\BlogPost;
+use AppBundle\Entity\User;
 use AppBundle\Repository\BlogPostRepository;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
@@ -95,6 +96,11 @@ class PostApiController extends FOSRestController
     if (empty($post)) {
       return new View("post not found", Response::HTTP_NOT_FOUND);
     }
+    /** @var User $author */
+    $author = $this->getUser();
+    if ($post->getAuthor()->getId() !== $author->getId()) {
+      return new View("Access denied", Response::HTTP_FORBIDDEN);
+    }
     $title = $request->get('title', $post->getTitle());
     $content = $request->get('content', $post->getContent());
     $keywords = $request->get('keywords', $post->getKeywords());
@@ -120,10 +126,14 @@ class PostApiController extends FOSRestController
     $post = $this->getDoctrine()->getRepository(BlogPost::class)->find($id);
     if (empty($post)) {
       return new View("post not found", Response::HTTP_NOT_FOUND);
-    } else {
-      $post->setDraft(true);
-      $sn->flush();
     }
+    /** @var User $author */
+    $author = $this->getUser();
+    if ($post->getAuthor()->getId() !== $author->getId()) {
+      return new View("Access denied", Response::HTTP_FORBIDDEN);
+    }
+    $post->setDraft(true);
+    $sn->flush();
     return new View("deleted successfully", Response::HTTP_OK);
   }
 }
