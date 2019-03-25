@@ -59,15 +59,26 @@ class CommentApiController extends FOSRestController
   }
 
   /**
-   * @Rest\Post("/api/comment/")
+   * @Rest\Post("/api/comment/{postId}")
+   * @param $postId
    * @param Request $request
    * @return View
    */
-  public function postAction(Request $request)
+  public function postAction($postId,Request $request)
   {
     $data = new BlogComment();
     $content = $request->get('content');
     $author = $this->getUser();
+    /** @var BlogPost $post */
+    $post = $this->getDoctrine()
+      ->getRepository(BlogPost::class)
+      ->findOneBy([
+        "id" => (int)$postId,
+        "draft" => false
+      ]);
+    if (empty($post)) {
+      return new View("Post not found", Response::HTTP_NOT_ACCEPTABLE);
+    }
     if (empty($content)) {
       return new View("NULL VALUES ARE NOT ALLOWED", Response::HTTP_NOT_ACCEPTABLE);
     }

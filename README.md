@@ -26,7 +26,7 @@ Api<br/>
 <br/>
 *comments*<br>
  GET `/api/comments/{postId}`<br>
- POST `/api/comment/`<br>
+ POST `/api/comment/{postId}`<br>
  PUT `/api/comment/{id}`<br>
  DELETE `/api/comment/{id}`<br>
 <br/><br/>
