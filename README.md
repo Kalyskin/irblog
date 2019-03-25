@@ -1,4 +1,4 @@
-irblog
+irblog symfony3.4
 ======
 How to run app
 - 
