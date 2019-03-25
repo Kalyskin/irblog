@@ -63,6 +63,9 @@ class PostApiController extends FOSRestController
     $keywords = $request->get('keywords', '');
     $meta_description = $request->get('meta_description', '');
     $author = $this->getUser();
+    if (empty($author)) {
+      return new View("Access denied", Response::HTTP_FORBIDDEN);
+    }
     if (empty($title) || empty($content)) {
       return new View("NULL VALUES ARE NOT ALLOWED", Response::HTTP_NOT_ACCEPTABLE);
     }

@@ -71,6 +71,9 @@ class CommentApiController extends FOSRestController
     if (empty($content)) {
       return new View("NULL VALUES ARE NOT ALLOWED", Response::HTTP_NOT_ACCEPTABLE);
     }
+    if (empty($author)) {
+      return new View("Access denied", Response::HTTP_FORBIDDEN);
+    }
     $data->setContent($content);
     $data->setAuthor($author);
     $em = $this->getDoctrine()->getManager();
