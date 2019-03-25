@@ -64,7 +64,7 @@ class CommentApiController extends FOSRestController
    * @param Request $request
    * @return View
    */
-  public function postAction($postId,Request $request)
+  public function postAction($postId, Request $request)
   {
     $data = new BlogComment();
     $content = $request->get('content');
@@ -88,6 +88,7 @@ class CommentApiController extends FOSRestController
     $data->setContent($content);
     $data->setAuthor($author);
     $data->setCreatedAt(new \DateTime());
+    $data->setPost($post);
     $em = $this->getDoctrine()->getManager();
     $em->persist($data);
     $em->flush();
